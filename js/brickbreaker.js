@@ -42,15 +42,44 @@ function preload() {
 var breakSound;
 var gameOver;
 var gameStart;
-var gameWin
+var gameWin;
 
-
-
-      
-
-
- 
-
+// //adding ball and rendering movement on screen
+// //loading arcade physics
+function create() {
+    game.physics.startSystem(Phaser.Physics.ARCADE);
+    
+    var bg = game.add.sprite(0,0, 'bg');
+    bg.scale.setTo(80, 60);
+    
+     //adds start button to game, sets position
+     startButton = game.add.button(game.world.width*0.5, game.world.height*0.5, 'button', startGame, this, 1, 0, 2);
+     startButton.anchor.set(0.5);
+    
+     //function to start game on button press
+     function startGame() {
+         //removes button after pressed
+         gameStart = game.add.audio ('gamestart');
+         startButton.kill();
+         gameStart.play();
+    
+         //enables velocity
+         ball.body.velocity.set(300, -300);
+         //playing variable no longer false
+         playing = true;
+    
+         //adding sound effects
+         breakSound = game.add.audio ('break');
+         gameOver = game.add.audio ('gameover');
+         gameWin = game.add.audio ('gamewin');
+         
+    
+         
+    
+    
+    
+     }
+    
 
 
 // // gameover: function() {
