@@ -1,0 +1,17 @@
+Project 1
+Shivank Rao
+
+GITHUB:
+https://github.com/shivankrao/brickbreaker
+
+LIVE SITE:
+https://nervous-wright-0708a0.netlify.com/
+
+WIREFRAME:
+https://www.figma.com/file/HyBDPHjT8rbQAzeiNCmSXB65/basic-brick-breaker-wireframe?node-id=0%3A1
+
+TRELLO:
+https://trello.com/b/2rsaweHX/wdi18-project-1-brickbreaker
+
+
+For this project I wanted to recreate a simple clone of breakout (brick breaker) in javascript. I used the phaser library to handle physics and animation.
