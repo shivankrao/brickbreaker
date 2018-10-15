@@ -82,8 +82,8 @@ function create() {
     
  
     
-    //     //BALL
-    //         //adding ball sprite to game
+    //BALL
+    //adding ball sprite to game
     ball = game.add.sprite(game.world.width*0.5, game.world.height-110, 'ball');
     ball.anchor.set(0.5);        
     //enabling arcade physics onto ball
@@ -184,8 +184,8 @@ for(c=0; c<brickInfo.count.col; c++) {
 
 // generateBricks () {
 //     let rows = 5
-//     let columns = 15
-//     let xOffset = 50
+//     let columns = 20
+//     let xOffset = 20
 //     let yOffset = 45
 
 //     for (let y = 0; y < rows; y++) {
