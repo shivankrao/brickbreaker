@@ -7,6 +7,46 @@ var ball;
 var paddle;
 var bricks;
 
+var addBrick;
+var brickInfo;
+var scoreText;
+
+var score = 0;
+var lives = 5;
+
+var livesText;
+var lifeLost;
+
+var playing = false;
+var startButton;
+
+//preloading assets, scaling game
+function preload() {
+    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    game.scale.pageAlignHorizontally = true;
+    game.scale.pageAlignVertically = true;
+    game.stage.backgroundColor = '#eee';
+    game.load.image('bg', 'assets/images/background.png')
+
+    game.load.image('paddle', 'assets/images/paddle/paddle-grey.png');
+    game.load.image('brick', 'assets/images/bricks/17-Breakout-Tiles.png');
+    game.load.image('ball', 'assets/images/ball/ball-gold.png', 20, 20);
+    game.load.image('button', 'assets/images/buttons/start.png', 120, 40);
+
+    game.load.audio('break', 'assets/audio/brickbreak.mp3');
+    game.load.audio('gameover', 'assets/audio/gameover.mp3');
+    game.load.audio('gamestart', 'assets/audio/gamestart.mp3');
+    game.load.audio('gamewin', 'assets/audio/win.mp3');
+}
+
+var breakSound;
+var gameOver;
+var gameStart;
+var gameWin
+
+
+
+      
 
 
  
