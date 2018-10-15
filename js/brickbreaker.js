@@ -227,6 +227,32 @@ scoreText.setText('Points: '+score);
 }
 }
 
+//function to handle actions when ball leaves screen but player has not lost all lives yet
+function ballLeaveScreen() {
+    lives--;
+    if(lives) {
+        livesText.setText('Lives: '+lives);
+        lifeLost.visible = true;
+        //resetting assets
+        ball.reset(game.world.width*0.5, game.world.height-25);
+        paddle.reset(game.world.width*0.5, game.world.height-5);
+        game.input.onDown.addOnce(function(){
+            lifeLost.visible = false;
+            ball.body.velocity.set(150, -150);
+        }, this);
+    }
+    else {
+        alert('Game over!');
+    
+        gameOver.play();
+          }
+    
+    }
+    
+    //function to handle collision physics for ball and paddle
+    function ballHitPaddle(ball, paddle) {
+    ball.body.velocity.x = -1*5*(paddle.x-ball.x);
+    }
 
 
     
