@@ -165,9 +165,67 @@ brickInfo = {
     padding: 10
 };
 
+//for loop to handle brick creation (taken directly from mdn tutorial, below is my previous attempt)
+this.bricks = game.add.group();
+
+for(c=0; c<brickInfo.count.col; c++) {
+    for(r=0; r<brickInfo.count.row; r++) {
+        var brickX = (r*(brickInfo.width+brickInfo.padding))+brickInfo.offset.left;
+        var brickY = (c*(brickInfo.height+brickInfo.padding))+brickInfo.offset.top;
+        
+        addBrick = game.add.sprite(brickX, brickY, 'brick');
+        game.physics.enable(addBrick, Phaser.Physics.ARCADE);
+        addBrick.body.immovable = true;
+        addBrick.anchor.set(0.5);
+        bricks.add(addBrick);
+
+// this.bricks = game.add.group();
+// this.generateBricks(this.bricks);
+
+// generateBricks () {
+//     let rows = 5
+//     let columns = 15
+//     let xOffset = 50
+//     let yOffset = 45
+
+//     for (let y = 0; y < rows; y++) {
+//         for (let x=0; x < columns; x++) {
+
+//             this.game,
+//             x * xOffset,
+//             y * yOffset
+
+//             addBrick = game.add.sprite(brickX, brickY, 'brick')
+
+//     }
+}
+
+    }
+}
 
 
+//creates animation for brick destroyal
+function ballHitBrick(ball, brick) {
+var killBrick = game.add.tween(brick.scale);
+killBrick.to({x:0,y:0}, 200, Phaser.Easing.Linear.None);
 
+//kills bricks when hit, plays sound
+killBrick.onComplete.addOnce(function(){
+    brick.kill();
+    breakSound.play();
+}, this);
+
+//sets score, modal box when player destroys all bricks
+killBrick.start();    
+score += 10;
+scoreText.setText('Points: '+score);
+    if(score === brickInfo.count.row*brickInfo.count.col*10) {
+        win.play();
+        alert('You won!');
+        location.reload();
+
+}
+}
 
 
 
