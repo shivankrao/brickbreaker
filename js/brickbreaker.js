@@ -80,6 +80,32 @@ function create() {
     
      }
     
+ 
+    
+    //     //BALL
+    //         //adding ball sprite to game
+    ball = game.add.sprite(game.world.width*0.5, game.world.height-110, 'ball');
+    ball.anchor.set(0.5);        
+    //enabling arcade physics onto ball
+        game.physics.enable(ball, Phaser.Physics.ARCADE);
+    //collision physics for ball (creates object boundaries)
+        ball.body.collideWorldBounds = true;
+    //makes ball bounce off boundaries
+        ball.body.bounce.set(1);
+    
+    //setting world boundaries as true
+        ball.checkWorldBounds = true;
+
+    //setting up variable to handle ball leaving screen
+        ball.events.onOutOfBounds.add(ballLeaveScreen, this);
+
+       
+
+
+
+
+
+
 
 
 // // gameover: function() {
