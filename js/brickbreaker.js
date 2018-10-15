@@ -115,6 +115,62 @@ function create() {
         paddle.body.immovable = true;
 
 
+//creating group to connect score with bricks hit
+initBricks() 
+
+        textStyle = { font: '18px Arial', fill: '#ffffff' };
+
+        scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
+
+        livesText = game.add.text(game.world.width-5, 5, 'Lives: '+lives, textStyle);
+
+        livesText.anchor.set(1,0);
+
+        lifeLost = game.add.text(game.world.width*0.5, game.world.height*0.5, 'Life lost! Click to continue', textStyle);
+
+        lifeLost.anchor.set(0.5);
+
+        lifeLost.visible = false;
+
+//disabling collision detection at bottom of screen
+game.physics.arcade.checkCollision.down = false;
+ball.checkWorldBounds = true;
+}
+
+
+function update() {
+//collision physics for ball/paddle
+game.physics.arcade.collide(ball, paddle, ballHitPaddle);
+game.physics.arcade.collide(ball, bricks, ballHitBrick);
+
+//moves paddle based on input, sets default position in middle of screen, if statement to make paddle immovable before start button is pressed
+if(playing) {
+    paddle.x = game.input.x || game.world.width*0.5;
+}
+}
+
+//handling brick creation information (taken directly from mdn tutorial)
+function initBricks() {
+brickInfo = {
+    width: 50,
+    height: 20,
+    count: {
+        row: 14,
+        col: 7
+    },
+    offset: {
+        top: 50,
+        left: 60
+    },
+    padding: 10
+};
+
+
+
+
+
+
+
 
 
 
