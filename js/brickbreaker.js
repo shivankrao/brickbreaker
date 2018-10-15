@@ -102,6 +102,19 @@ function create() {
        
 
 
+        
+
+        //PADDLE
+        //adding paddle sprite to game
+        paddle = game.add.sprite(game.world.width*0.5, game.world.height-45, 'paddle');
+        //sets anchor on paddle from bottom edge
+        paddle.anchor.set(0.5,1);
+        //enabling physics for paddle
+        game.physics.enable(paddle, Phaser.Physics.ARCADE);
+        //making paddle immovable
+        paddle.body.immovable = true;
+
+
 
 
 
