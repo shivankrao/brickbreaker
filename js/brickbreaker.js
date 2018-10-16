@@ -26,6 +26,7 @@ function preload() {
     game.scale.pageAlignHorizontally = true;
     game.scale.pageAlignVertically = true;
     game.stage.backgroundColor = '#eee';
+    //could not get this to work
     game.load.image('bg', 'assets/images/background.png')
 
     game.load.image('paddle', 'assets/images/paddle/paddle-grey.png');
@@ -37,15 +38,11 @@ function preload() {
     game.load.audio('gameover', 'assets/audio/gameover.mp3');
     game.load.audio('gamestart', 'assets/audio/gamestart.mp3');
     game.load.audio('gamewin', 'assets/audio/win.mp3');
+    game.load.audio('lose', 'assets/audio/lose.wav')
 }
 
-var breakSound;
-var gameOver;
-var gameStart;
-var gameWin
-
-// //adding ball and rendering movement on screen
-// //loading arcade physics
+//adding ball and rendering movement on screen
+//loading arcade physics
 function create() {
 game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -53,31 +50,35 @@ var bg = game.add.sprite(0,0, 'bg');
 bg.scale.setTo(80, 60);
 
  //adds start button to game, sets position
- startButton = game.add.button(game.world.width*0.5, game.world.height*0.5, 'button', startGame, this, 1, 0, 2);
+ startButton = game.add.button(game.world.width*0.5, game.world.height*0.6, 'button', startGame, this, 1, 0, 2);startButton.scale.setTo(0.5,0.5);
  startButton.anchor.set(0.5);
 
  //function to start game on button press
  function startGame() {
+    gameStart = game.add.audio ('gamestart');
+
      //removes button after pressed
-     gameStart = game.add.audio ('gamestart');
-     startButton.kill();
+     var killButton = game.add.tween(startButton.scale);
+     killButton.to({x:0,y:0}, 200, Phaser.Easing.Linear.None);
+
+     killButton.onComplete.addOnce(function(){
+        startButton.kill();
+    }, this);
+    killButton.start();     
+
      gameStart.play();
 
      //enables velocity
      ball.body.velocity.set(300, -300);
+
      //playing variable no longer false
      playing = true;
-     game.world.bringToTop(startButton);
 
      //adding sound effects
      breakSound = game.add.audio ('break');
      gameOver = game.add.audio ('gameover');
      gameWin = game.add.audio ('gamewin');
-     
-
-     
-
-
+     lose = game.add.audio ('lose');
 
  }
  
@@ -92,10 +93,8 @@ bg.scale.setTo(80, 60);
             ball.body.collideWorldBounds = true;
         //makes ball bounce off boundaries
             ball.body.bounce.set(1);
-        
         //setting world boundaries as true
             ball.checkWorldBounds = true;
-
         //setting up variable to handle ball leaving screen
             ball.events.onOutOfBounds.add(ballLeaveScreen, this);
 
@@ -106,15 +105,15 @@ bg.scale.setTo(80, 60);
     //creating group to connect score with bricks hit
     initBricks() 
 
-            textStyle = { font: '18px Arial', fill: '#0095DD' };
+            textStyle = { font: '18px Arial', fill: '#ffffff' };
 
-            scoreText = game.add.text(5, 5, 'Points: 0', textStyle);
+            scoreText = game.add.text(5, 5, '0', textStyle);
 
-            livesText = game.add.text(game.world.width-5, 5, 'Lives: '+lives, textStyle);
+            livesText = game.add.text(game.world.width-5, 5, '❤️ '+lives, textStyle);
 
             livesText.anchor.set(1,0);
 
-            lifeLost = game.add.text(game.world.width*0.5, game.world.height*0.5, 'Life lost! Click to continue', textStyle);
+            lifeLost = game.add.text(game.world.width*0.5, game.world.height*0.5, 'Click to continue', textStyle);
 
             lifeLost.anchor.set(0.5);
 
@@ -145,7 +144,7 @@ function update() {
     game.physics.arcade.collide(ball, paddle, ballHitPaddle);
     game.physics.arcade.collide(ball, bricks, ballHitBrick);
 
-    //moves paddle based on input, sets default position in middle of screen, if statement to make paddle immovable before start button is pressed
+    //moves paddle based on mouse input, sets default position in middle of screen, if statement to make paddle immovable before start button is pressed
     if(playing) {
         paddle.x = game.input.x || game.world.width*0.5;
     }
@@ -170,11 +169,13 @@ function initBricks() {
     //for loop to handle brick creation (taken directly from mdn tutorial, below is my previous attempt)
     this.bricks = game.add.group();
 
+    //iterating through columns and rows, taking into account brick width, height, and offset, then multiplying by set row and column parameters to create a full array
     for(c=0; c<brickInfo.count.col; c++) {
         for(r=0; r<brickInfo.count.row; r++) {
             var brickX = (r*(brickInfo.width+brickInfo.padding))+brickInfo.offset.left;
             var brickY = (c*(brickInfo.height+brickInfo.padding))+brickInfo.offset.top;
             
+
             addBrick = game.add.sprite(brickX, brickY, 'brick');
             game.physics.enable(addBrick, Phaser.Physics.ARCADE);
             addBrick.body.immovable = true;
@@ -217,14 +218,13 @@ function ballHitBrick(ball, brick) {
         breakSound.play();
     }, this);
 
-    //sets score, modal box when player destroys all bricks
+    //sets score, alert box when player destroys all bricks
     killBrick.start();    
     score += 10;
-    scoreText.setText('Points: '+score);
+    scoreText.setText(score);
         if(score === brickInfo.count.row*brickInfo.count.col*10) {
-            win.play();
+            gameWin.play();
             alert('You won!');
-            location.reload();
     
     }
 }
@@ -233,8 +233,9 @@ function ballHitBrick(ball, brick) {
 function ballLeaveScreen() {
     lives--;
     if(lives) {
-        livesText.setText('Lives: '+lives);
+        livesText.setText('❤️ '+lives);
         lifeLost.visible = true;
+        lose.play();
 
         //resetting assets
         ball.reset(game.world.width*0.5, game.world.height-25);
@@ -246,6 +247,8 @@ function ballLeaveScreen() {
         }, this);
     }
     else {
+        livesText.setText('💔 '+lives);
+
         alert('Game over!');
 
         gameOver.play();
