@@ -15,7 +15,7 @@
 
 
 ## Intro
-Breakout is a classic game - one of the first games in fact, based on a modified version of the already popular pong. 
+Breakout is a classic game - one of the first games in fact, based on a modified version of the game Pong. 
 
 For this project I wanted to recreate a clone of breakout in javascript. I used the phaser library to handle physics and animation.
 
