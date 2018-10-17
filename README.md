@@ -5,7 +5,7 @@
 ##### https://github.com/shivankrao/brickbreaker
 
 #### LIVE SITE:
-##### https://gallant-kirch-3c4f98.netlify.com
+##### https://nervous-wright-0708a0.netlify.com/
 
 #### WIREFRAME:
 ##### https://www.figma.com/file/HyBDPHjT8rbQAzeiNCmSXB65/basic-brick-breaker-wireframe?node-id=0%3A1
