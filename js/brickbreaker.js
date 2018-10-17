@@ -69,7 +69,7 @@ bg.scale.setTo(80, 60);
      gameStart.play();
 
      //enables velocity
-     ball.body.velocity.set(300, -300);
+     ball.body.velocity.set(500, -500);
 
      //playing variable no longer false
      playing = true;
@@ -85,7 +85,7 @@ bg.scale.setTo(80, 60);
 
      //BALL
          //adding ball sprite to game
-        ball = game.add.sprite(game.world.width*0.5, game.world.height-110, 'ball');
+        ball = game.add.sprite(game.world.width*0.5, game.world.height-115, 'ball');
         ball.anchor.set(0.5);        
         //enabling arcade physics onto ball
             game.physics.enable(ball, Phaser.Physics.ARCADE);
@@ -114,6 +114,8 @@ bg.scale.setTo(80, 60);
             livesText.anchor.set(1,0);
 
             lifeLost = game.add.text(game.world.width*0.5, game.world.height*0.5, 'Click to continue', textStyle);
+
+            // playAgain = game.add.text(game.world.width*0.5, game.world.height*0.5, 'Play again?', textStyle);
 
             lifeLost.anchor.set(0.5);
 
@@ -150,7 +152,7 @@ function update() {
     }
 }
 
-//handling brick creation information (taken directly from mdn tutorial)
+//handling brick creation styling (taken directly from mdn tutorial)
 function initBricks() {
     brickInfo = {
         width: 50,
@@ -238,23 +240,38 @@ function ballLeaveScreen() {
         lose.play();
 
         //resetting assets
-        ball.reset(game.world.width*0.5, game.world.height-25);
-        paddle.reset(game.world.width*0.5, game.world.height-5);
+        ball.reset(game.world.width*0.5, game.world.height-115);
+        ball.anchor.set(0.5);        
+        paddle.reset(game.world.width*0.5, game.world.height-45);
 
         game.input.onDown.addOnce(function(){
             lifeLost.visible = false;
-            ball.body.velocity.set(150, -150);
+            ball.body.velocity.set(500, -500);
         }, this);
     }
     else {
         livesText.setText('💔 '+lives);
-
         alert('Game over!');
 
         gameOver.play();
-          }
-    
+
+        ball.reset(game.world.width*0.5, game.world.height-115);
+        paddle.reset(game.world.width*0.5, game.world.height-45);
+        lifeLost.visible = false;
+
+        
 }
+}
+
+    function playAgain() {
+        if (lives == 0)
+        game.input.onDown.addOnce(function(){
+            playAgain.visible = true;
+
+          }, this);
+        }
+    
+    
 
 //function to handle collision physics for ball and paddle
 function ballHitPaddle(ball, paddle) {
